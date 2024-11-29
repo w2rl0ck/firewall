@@ -17,6 +17,7 @@ struct packet {
     void serialize(uint16_t val);
     void serialize(uint32_t val);
     void serialize(uint64_t val);
+    int alloc(uint32_t size);
 };
 
 }

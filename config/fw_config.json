@@ -1,0 +1,17 @@
+{
+    "fw_intf_info": [
+        {
+            "interface_name": "dummy0",
+            "rules_file": "./rules_config.xml"
+        }
+    ],
+    "events": {
+        "forward_events": true,
+        "log_events": true,
+        "log_file_path": "./log/event_log.txt"
+    },
+    "pcap": {
+        "enable": true,
+        "log_file_path": "./pcap/"
+    }
+}

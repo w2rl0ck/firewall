@@ -1,3 +1,5 @@
+#include <cstdlib>
+
 #include "packet.h"
 
 namespace fw {
@@ -39,6 +41,16 @@ void packet::serialize(uint64_t val)
     buf_ptr[off] = (val & 0x00000000000000FF);
 
     off += 8;
+}
+
+int packet::alloc(uint32_t size)
+{
+    buf_ptr = (uint8_t *)calloc(1, size);
+    if (!buf_ptr) {
+        return -1;
+    }
+
+    return 0;
 }
 
 }
