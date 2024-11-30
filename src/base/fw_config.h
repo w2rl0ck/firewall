@@ -41,6 +41,9 @@ struct fw_config {
             return &conf;
         }
 
+        /**
+         * @brief - parse configuration.
+        */
         int parse(const std::string &config);
         ~fw_config() { }
 

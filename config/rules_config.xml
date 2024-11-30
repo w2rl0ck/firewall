@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<rules_config>
+    <rule>
+        <rule_id>1</rule_id>
+        <rule_type>allow</rule_type>
+        <src_interface>dummy0</src_interface>
+        <dst_interface>dummy1</dst_interface>
+        <ethernet_rule>
+            <src_mac>00:11:22:33:44:55</src_mac>
+            <dst_mac>00:01:02:04:04:05</dst_mac>
+            <ethertype>0x0800</ethertype>
+        </ethernet_rule>
+    </rule>
+    <rule>
+        <rule_id>1</rule_id>
+        <rule_type>allow</rule_type>
+        <src_interface>dummy0</src_interface>
+        <dst_interface>dummy1</dst_interface>
+        <ethernet_rule>
+            <src_mac>00:11:22:33:44:55</src_mac>
+            <dst_mac>00:01:02:04:04:05</dst_mac>
+            <ethertype>0x8100</ethertype>
+        </ethernet_rule>
+        <vlan_rule>
+            <vid>10</vid>
+        </vlan_rule>
+    </rule>
+</rules_config>
