@@ -16,8 +16,10 @@
 #include <packet.h>
 #include <pcap_intf.h>
 #include <logging.h>
+#include <fw_filter.h>
 
 namespace fw {
+
 
 /**
  * @brief - defines a firewall interface.
@@ -44,8 +46,10 @@ class fw_intf {
         std::unique_ptr<std::thread> rx_thr_;
         std::shared_ptr<raw_socket> raw_;
         std::shared_ptr<pcap_writer> pcap_wr_;
+        std::unique_ptr<std::thread> filt_thr_;
 
         void rx_thread();
+        void filter_func();
         int create_pcap_file();
 };
 

@@ -22,25 +22,51 @@ namespace fw {
 void fw_intf::rx_thread()
 {
     int ret;
-    logging *log = logging::instance();
 
     while (1) {
         packet p;
 
+        // alloc rx packet
         ret = p.alloc(MAX_BUF_SIZE);
         if (ret != 0) {
             break;
         }
 
+        // rx frame
         ret = raw_->recv_msg(p.buf_ptr, MAX_BUF_SIZE);
         if (ret < 0) {
             continue;
         }
+        p.buf_len = ret;
 
         {
             std::unique_lock l(q_lock_);
+            q_cond_.notify_all();
             rx_q_.push(p);
         }
+    }
+}
+
+/**
+ * @brief - consume a packet and free up the buffer.
+ */
+void fw_intf::filter_func()
+{
+    //logging *log = logging::instance();
+
+    while (1) {
+        std::unique_lock l(q_lock_);
+        q_cond_.wait(l);
+
+        //log->info("waiting on packet from rx thread\n");
+        int q_len = rx_q_.size();
+        while (q_len > 0) {
+            q_len --;
+        }
+
+        packet p = rx_q_.front();
+        p.free_buf_ptr();
+        rx_q_.pop();
     }
 }
 
@@ -90,7 +116,6 @@ int fw_intf::create_pcap_file()
     }
 
     pcap_wr_ = std::make_shared<pcap_writer>(filename);
-
     log_->info("create pcap file <%s> ok.\n", filename.c_str());
 
     return 0;
@@ -116,6 +141,11 @@ int fw_intf::create(const std::string &ifname)
     rx_thr_->detach();
 
     log_->info("create rx thread ok\n");
+
+    filt_thr_ = std::make_unique<std::thread>(&fw_intf::filter_func, this);
+    filt_thr_->detach();
+
+    log_->info("create filter thread ok\n");
 
     return 0;
 }

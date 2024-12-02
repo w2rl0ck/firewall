@@ -10,7 +10,8 @@ set(FW_SRC
     src/base/fw_base.cc
     src/base/fw_intf.cc
     src/base/fw_cmd_args.cc
-    src/base/fw_config.cc)
+    src/base/fw_config.cc
+    src/filter/fw_filter.cc)
 
 set(SRC
     ${LIB_SRC}
@@ -22,6 +23,7 @@ include_directories(
     ./lib/log/
     ./lib/raw/
     ./src/base/
+    ./src/filter/
 )
 
 set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wno-unused-parameter -g -ggdb -Os")
