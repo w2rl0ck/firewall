@@ -1,4 +1,5 @@
 #include <cstdlib>
+#include <cstring>
 
 #include "packet.h"
 
@@ -43,6 +44,12 @@ void packet::serialize(uint64_t val)
     off += 8;
 }
 
+void packet::serialize(uint8_t *val, size_t len)
+{
+    std::memcpy(buf_ptr + off, val, len);
+    off += len;
+}
+
 int packet::alloc(uint32_t size)
 {
     buf_ptr = (uint8_t *)calloc(1, size);
@@ -85,6 +92,12 @@ void packet::deserialize(uint64_t &val)
           ((uint64_t)(buf_ptr[off + 1]) << 48) |
           ((uint64_t)(buf_ptr[off]) << 56);
     off += 8;
+}
+
+void packet::deserialize(uint8_t *mac, size_t len)
+{
+    std::memcpy(mac, buf_ptr + off, len);
+    off += len;
 }
 
 }
