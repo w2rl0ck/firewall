@@ -20,5 +20,16 @@ void event_store::write_event(std::string &ifname, event_information &info)
     event_map_store_.insert(std::pair(ifname, info));
 }
 
+void event_store::write_event(std::string &ifname,
+                              timestamp_data &arrival_ts,
+                              event_type type,
+                              event_description desc)
+{
+    event_information info;
+
+    info.set(ifname, arrival_ts, type, desc);
+    write_event(ifname, info);
+}
+
 }
 

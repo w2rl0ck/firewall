@@ -33,6 +33,11 @@ struct event_information {
             evt_desc(event_description::EVENT_DESC_NONE)
     { }
     ~event_information() { }
+
+    void set(std::string &ifname,
+             timestamp_data &arrival_ts,
+             event_type evt_type,
+             event_description evt_desc);
 };
 
 }

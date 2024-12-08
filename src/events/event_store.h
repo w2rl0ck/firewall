@@ -18,6 +18,10 @@ class event_store {
         }
 
         void write_event(std::string &ifname, event_information &info);
+        void write_event(std::string &ifname,
+                         timestamp_data &arrival_ts,
+                         event_type type,
+                         event_description desc);
 
     private:
         explicit event_store() { }

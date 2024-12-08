@@ -52,6 +52,7 @@ void fw_intf::rx_thread()
  */
 void fw_intf::filter_func()
 {
+    fw_filter filt;
     //logging *log = logging::instance();
 
     while (1) {
@@ -61,12 +62,14 @@ void fw_intf::filter_func()
         //log->info("waiting on packet from rx thread\n");
         int q_len = rx_q_.size();
         while (q_len > 0) {
-            q_len --;
-        }
+            packet p = rx_q_.front();
 
-        packet p = rx_q_.front();
-        p.free_buf_ptr();
-        rx_q_.pop();
+            // run filtering
+            filt.run(p);
+
+            rx_q_.pop();
+            q_len = rx_q_.size();
+        }
     }
 }
 
