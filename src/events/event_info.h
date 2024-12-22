@@ -17,7 +17,18 @@ enum class event_description : uint32_t {
     EVENT_DESC_ETH_UNSUPPORTED_ETHERTYPE,
     EVENT_DESC_ETH_SHORT_LEN,
 
+    EVENT_DESC_ARP_SHORT_LEN                = 0x2000,
+    EVENT_DESC_ARP_HW_LEN_INVALID,
+    EVENT_DESC_ARP_PROTOCOL_LEN_INVALID,
+
     EVENT_DESC_NONE                         = 0xFFFFFFFE,
+};
+
+struct event_description_data {
+    event_type type;
+    event_description desc;
+
+    void set(event_type t, event_description d) { type = t, desc = d; }
 };
 
 struct event_information {

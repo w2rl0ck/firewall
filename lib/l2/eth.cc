@@ -20,24 +20,24 @@ int eth_hdr::serialize(packet &pkt, logging *log)
     return 0;
 }
 
-int eth_hdr::deserialize(packet &pkt, logging *log)
+event_description_data eth_hdr::deserialize(packet &pkt, logging *log)
 {
-    if (pkt.buf_len < len_) {
-        event_store *store;
+    event_description_data evt;
 
-        store = event_store::instance();
-        store->write_event(pkt.ifname,
-                           pkt.arrival_ts,
-                           event_type::EVENT_TYPE_DENY,
-                           event_description::EVENT_DESC_ETH_SHORT_LEN);
-        return -1;
+    if (pkt.buf_len < len_) {
+        evt.set(event_type::EVENT_TYPE_DENY,
+                event_description::EVENT_DESC_ETH_SHORT_LEN);
+        return evt;
     }
 
     pkt.deserialize(dst, sizeof(dst));
     pkt.deserialize(src, sizeof(src));
     pkt.deserialize(ethertype);
 
-    return 0;
+    evt.set(event_type::EVENT_TYPE_ALLOW,
+            event_description::EVENT_DESC_NONE);
+
+    return evt;
 }
 
 void eth_hdr::print(logging *log)

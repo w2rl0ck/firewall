@@ -9,6 +9,7 @@
 #include "protocol_common.h"
 #include "packet.h"
 #include "logging.h"
+#include "event_info.h"
 
 namespace fw {
 
@@ -24,7 +25,7 @@ struct eth_hdr {
     ~eth_hdr() { }
 
     int serialize(packet &pkt, logging *log);
-    int deserialize(packet &pkt, logging *log);
+    event_description_data deserialize(packet &pkt, logging *log);
     void print(logging *log);
     bool is_broadcast_mac(uint8_t *mac);
 

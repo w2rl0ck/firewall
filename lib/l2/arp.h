@@ -4,13 +4,14 @@
 #include <packet.h>
 #include <protocol_common.h>
 #include <logging.h>
+#include <event_info.h>
 
 namespace fw {
 
 struct arp_hdr {
     uint16_t hdr_type;
     uint16_t protocol_type;
-    uint8_t hdr_len;
+    uint8_t hw_len;
     uint8_t protocol_len;
     uint16_t op;
     uint8_t sender_hw_addr[FW_LIB_ETH_MACADDR_LEN];
@@ -19,8 +20,13 @@ struct arp_hdr {
     uint32_t target_protocol_addr;
 
     int serialize(packet &p, logging *log);
-    int deserialize(packet &p, logging *log);
+    event_description_data deserialize(packet &p, logging *log);
     void print(logging *log);
+
+    private:
+        int len_ = 28u;
+        size_t hw_len_default_ = 6u;
+        size_t protocol_len_default_ = 4u;
 };
 
 }

@@ -9,20 +9,20 @@ namespace fw {
 int fw_filter::l2_parse(packet &p)
 {
     logging *log;
-    int ret;
+    event_description_data evt;
 
     log = logging::instance();
 
-    ret = eh.deserialize(p, log);
+    evt = eh.deserialize(p, log);
     //eh.print(log);
-    if (ret != 0) {
+    if (evt.type == event_type::EVENT_TYPE_DENY) {
         return -1;
     }
 
     switch (static_cast<ether_types>(eh.ethertype)) {
     }
 
-    return ret;
+    return 0;
 }
 
 int fw_filter::run(packet &p)

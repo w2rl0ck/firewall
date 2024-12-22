@@ -2,12 +2,15 @@ cmake_minimum_required(VERSION 3.9)
 
 project(firewall)
 
+file(GLOB L2_LIB_SRC
+    ./lib/l2/*.cc)
+
 set(LIB_SRC
     ./lib/packet/packet.cc
     ./lib/raw/raw_socket.cc
     ./lib/log/logging.cc
     ./lib/pcap/pcap_intf.cc
-    ./lib/l2/eth.cc
+    ${L2_LIB_SRC}
     ./lib/common/clock_info.cc
     ./src/events/event_store.cc
     ./src/events/event_info.cc
